@@ -7,10 +7,12 @@ class Fleer extends Vehicle {
 
     // Who to flee
     ArrayList<Vehicle> targets;
+    ArrayList<Obstacle> obstacles;
     float closestDist;
 
     //constructor
     Fleer(  ArrayList<Vehicle> targets_,
+            ArrayList<Obstacle> obstacles_,
             float x_,
             float y_,
             float r_,
@@ -19,6 +21,7 @@ class Fleer extends Vehicle {
 
         super(x_, y_, r_, maxSpeed_, maxForce);
         targets = targets_;
+        obstacles = obstacles_;
         steer = new Steer(this);
     }
 
@@ -32,6 +35,11 @@ class Fleer extends Vehicle {
         }
         else {
             force.add(PVector.mult(steer.wander(), fleerTargetWt));
+        }
+
+        for (int i = 0; i < obstacles.size(); i++) {
+            Obstacle obst = obstacles.get(i);
+            force.add(PVector.mult(steer.avoidObstacle(obst, 20), fleerTargetWt));
         }
 
         if (offStage(border)){

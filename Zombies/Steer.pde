@@ -52,6 +52,7 @@ class Steer {
         PVector steer = new PVector(0, 0);
 
         //Create vecToCenter - a vector from the character to the center of the obstacle
+        PVector vecToCenter = PVector.sub(obst.position, vehicle.position);
 
         // Find the distance to the obstacle
 

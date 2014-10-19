@@ -8,10 +8,12 @@ class Seeker extends Vehicle {
 
     // Who to flee
     ArrayList<Vehicle> targets;
+    ArrayList<Obstacle> obstacles;
     float closestDist;
 
     //constructor
     Seeker( ArrayList<Vehicle> targets_,
+            ArrayList<Obstacle> obstacles_,
             float x_,
             float y_,
             float r_,
@@ -20,6 +22,7 @@ class Seeker extends Vehicle {
 
         super(x_, y_, r_, maxSpeed_, maxForce);
         targets = targets_;
+        obstacles = obstacles_;
         steer = new Steer(this);
     }
 
@@ -34,6 +37,8 @@ class Seeker extends Vehicle {
         else {
             force.add(PVector.mult(steer.wander(), fleerTargetWt));
         }
+
+        //force.add(PVector.mult(steer.avoidObstacle(), fleerTargetWt));
 
         if (offStage(border)){
             force.add(PVector.mult(steer.seek(center), seekerStageWt));

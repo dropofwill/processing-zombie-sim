@@ -85,8 +85,9 @@ void setup() {
     humans = new ArrayList<Vehicle>();
     trees = new ArrayList<Obstacle>();
 
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 0; i++) {
         zombies.add(new Seeker( humans,
+                                trees,
                                 random(border, width-border),
                                 random(border, height-border),
                                 zombieRadius,
@@ -94,8 +95,9 @@ void setup() {
                                 seekerForce));
     }
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 1; i++) {
         humans.add(new Fleer( zombies,
+                              trees,
                               random(border, width-border),
                               random(border, height-border),
                               humanRadius,
@@ -141,6 +143,7 @@ void draw() {
     for (int i = 0; i < zombies.size(); i++) {
         Vehicle aZombie = zombies.get(i);
         Iterator<Vehicle> iter = humans.iterator();
+
         while (iter.hasNext()) {
             Vehicle aHuman = iter.next();
             float dist = PVector.dist(aHuman.position, aZombie.position);
@@ -148,6 +151,7 @@ void draw() {
             if (dist < (humanRadius + zombieRadius)) {
                 println("Collision, you're a zombie");
                 zombies.add(new Seeker( humans,
+                                        trees,
                                         aHuman.position.x,
                                         aHuman.position.y,
                                         zombieRadius,
