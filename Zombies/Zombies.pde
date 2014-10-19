@@ -3,7 +3,10 @@ import java.util.Iterator;
 
 ArrayList<Vehicle> zombies;
 ArrayList<Vehicle> humans;
+ArrayList<Obstacle> trees;
+
 ControlP5 cp5;
+
 float border = 200;
 boolean debug = true;
 float zombieRadius = 12;
@@ -80,11 +83,12 @@ void setup() {
 
     zombies = new ArrayList<Vehicle>();
     humans = new ArrayList<Vehicle>();
+    trees = new ArrayList<Obstacle>();
 
     for (int i = 0; i < 2; i++) {
         zombies.add(new Seeker( humans,
-                                random(0, width),
-                                random(0, height),
+                                random(border, width-border),
+                                random(border, height-border),
                                 zombieRadius,
                                 seekerSpeed,
                                 seekerForce));
@@ -92,11 +96,17 @@ void setup() {
 
     for (int i = 0; i < 4; i++) {
         humans.add(new Fleer( zombies,
-                              width/2,
-                              height/2,
+                              random(border, width-border),
+                              random(border, height-border),
                               humanRadius,
                               fleerSpeed,
                               fleerForce));
+    }
+
+    for (int i = 0; i < 8; i++) {
+        trees.add(new Obstacle(random(border, width-border),
+                               random(border, height-border),
+                               random(20, 50)));
     }
 }
 
@@ -130,12 +140,22 @@ void draw() {
 
     for (int i = 0; i < zombies.size(); i++) {
         Vehicle aZombie = zombies.get(i);
-        for (int j = 0; j < humans.size(); j++) {
-            Vehicle aHuman = humans.get(j);
+        Iterator<Vehicle> iter = humans.iterator();
+        while (iter.hasNext()) {
+            Vehicle aHuman = iter.next();
             float dist = PVector.dist(aHuman.position, aZombie.position);
 
             if (dist < (humanRadius + zombieRadius)) {
                 println("Collision, you're a zombie");
+                zombies.add(new Seeker( humans,
+                                        aHuman.position.x,
+                                        aHuman.position.y,
+                                        zombieRadius,
+                                        seekerSpeed,
+                                        seekerForce));
+                iter.remove();
+                aZombie.closestTarget = null;
+                aZombie.target = null;
             }
         }
     }
@@ -146,14 +166,14 @@ void reset() {
         Vehicle human = humans.get(i);
         /*human.position.x = width/2;*/
         /*human.position.y = height/2;*/
-        human.position.x = random(0, width);
-        human.position.y = random(0, height);
+        human.position.x = random(border, width-border);
+        human.position.y = random(border, height-border);
     }
 
     for (int i = 0; i < zombies.size(); i++) {
         Vehicle zombie = zombies.get(i);
-        zombie.position.x = random(0, width);
-        zombie.position.y = random(0, height);
+        zombie.position.x = random(border, width-border);
+        zombie.position.y = random(border, height-border);
     }
 }
 
@@ -168,5 +188,9 @@ void updateAttrs(float fleeSpeed, float fleeForce, float seekSpeed, float seekFo
         Vehicle zombie = zombies.get(i);
         zombie.maxSpeed = seekSpeed;
         zombie.maxForce = seekForce;
+    }
+
+    for(int i = 0; i < trees.size(); i++) {
+        trees.get(i).display();
     }
 }

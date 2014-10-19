@@ -10,6 +10,10 @@ abstract class Vehicle {
     PVector fwd;
     PVector right;
 
+    // seek target
+    PVector target = null;
+    Vehicle closestTarget;
+
     float mass = 1.0;  //arbitrary value will alter acceleration
     float r;           //radius - not correct for this display
     float maxForce;    // Maximum steering force

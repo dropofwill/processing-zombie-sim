@@ -1,7 +1,4 @@
 class Fleer extends Vehicle {
-    // seek target
-    PVector target = null;
-
     //stage dimensions
     PVector center = new PVector(width/2, height/2);
 
@@ -10,7 +7,6 @@ class Fleer extends Vehicle {
 
     // Who to flee
     ArrayList<Vehicle> targets;
-    Vehicle closestTarget;
     float closestDist;
 
     //constructor
@@ -58,7 +54,9 @@ class Fleer extends Vehicle {
                 closestTarget = curTarget;
             }
         }
-        target = closestTarget.position;
+        if (closestTarget != null) {
+            target = closestTarget.position;
+        }
     }
 
     // test for outside stage border

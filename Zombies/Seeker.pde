@@ -1,7 +1,4 @@
 class Seeker extends Vehicle {
-    // seek target
-    PVector target = null;
-
     //stage dimensions
     PVector center = new PVector(width/2, height/2);
     float border = 200;
@@ -11,7 +8,6 @@ class Seeker extends Vehicle {
 
     // Who to flee
     ArrayList<Vehicle> targets;
-    Vehicle closestTarget;
     float closestDist;
 
     //constructor
@@ -35,6 +31,9 @@ class Seeker extends Vehicle {
             // and wander a bit
             force.add(PVector.mult(steer.wander(), fleerWanderWt));
         }
+        else {
+            force.add(PVector.mult(steer.wander(), fleerTargetWt));
+        }
 
         if (offStage(border)){
             force.add(PVector.mult(steer.seek(center), seekerStageWt));
@@ -56,7 +55,9 @@ class Seeker extends Vehicle {
                 closestTarget = curTarget;
             }
         }
-        target = closestTarget.position;
+        if (closestTarget != null) {
+            target = closestTarget.position;
+        }
     }
 
     // test for outside stage border
