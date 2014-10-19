@@ -6,10 +6,6 @@ class Seeker extends Vehicle {
     PVector center = new PVector(width/2, height/2);
     float border = 200;
 
-    //weights for steering forces
-    float stageWt = 10;
-    float targetWt = 5;
-
     // This component implements steering forces
     Steer steer;
 
@@ -35,11 +31,13 @@ class Seeker extends Vehicle {
     void calcSteeringForces() {
         PVector force = new PVector(0, 0);
         if (target != null) {
-            force.add(PVector.mult(steer.seek(target), targetWt));
+            force.add(PVector.mult(steer.seek(target), seekerTargetWt));
+            // and wander a bit
+            force.add(PVector.mult(steer.wander(), fleerWanderWt));
         }
 
         if (offStage(border)){
-            force.add(PVector.mult(steer.seek(center), stageWt));
+            force.add(PVector.mult(steer.seek(center), seekerStageWt));
         }
         //could add other steering forces here
         force.limit(maxForce);
@@ -58,6 +56,7 @@ class Seeker extends Vehicle {
                 closestTarget = curTarget;
             }
         }
+        target = closestTarget.position;
     }
 
     // test for outside stage border

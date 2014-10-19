@@ -21,6 +21,8 @@ class Steer {
 
     PVector flee(PVector target) {
         PVector desired = PVector.sub(vehicle.position, target);
+        println(vehicle.position, target);
+        desired.normalize();
         desired.setMag(vehicle.maxSpeed);
         PVector steer = PVector.sub(desired, vehicle.velocity);
         return steer;

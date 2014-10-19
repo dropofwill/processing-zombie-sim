@@ -6,10 +6,6 @@ class Fleer extends Vehicle {
     PVector center = new PVector(width/2, height/2);
     float border = 200;
 
-    //weights for steering forces
-    float stageWt = 10;
-    float targetWt = 5;
-
     // This component implements steering forces
     Steer steer;
 
@@ -34,14 +30,17 @@ class Fleer extends Vehicle {
     // All Vehicles must implement calcSteeringForces
     void calcSteeringForces() {
         PVector force = new PVector(0, 0);
-        force.add(PVector.mult(steer.wander(), targetWt));
-
-        if (target != null) {
-            force.add(PVector.mult(steer.flee(target), targetWt));
+        if (target != null && closestDist < fleerTargetLimit) {
+            force.add(PVector.mult(steer.flee(target), fleerTargetWt));
+            // and wander a bit
+            force.add(PVector.mult(steer.wander(), fleerWanderWt));
+        }
+        else {
+            force.add(PVector.mult(steer.wander(), fleerTargetWt));
         }
 
         if (offStage(border)){
-            force.add(PVector.mult(steer.seek(center), stageWt));
+            force.add(PVector.mult(steer.seek(center), fleerStageWt));
         }
         //could add other steering forces here
         force.limit(maxForce);
@@ -60,6 +59,7 @@ class Fleer extends Vehicle {
                 closestTarget = curTarget;
             }
         }
+        target = closestTarget.position;
     }
 
     // test for outside stage border
