@@ -74,20 +74,28 @@ class Seeker extends Vehicle {
         stroke(0);
         strokeWeight(1);
         noFill();
-        rect(border, border, width - 2* border, height - 2* border);
         // Draw a triangle rotated in the direction of velocity
         float theta = velocity.heading2D() + PI/2;
         fill(127);
         stroke(0);
         strokeWeight(1);
+
         pushMatrix();
-        translate(position.x, position.y);
-        rotate(theta);
-        beginShape();
-        vertex(0, -r*2);
-        vertex(-r, r*2);
-        vertex(r, r*2);
-        endShape(CLOSE);
+            translate(position.x, position.y);
+            rotate(theta);
+
+            if (debug) {
+                noFill();
+                ellipse(0, 0, r*2, r*2);
+            }
+
+            fill(127);
+            beginShape();
+                vertex(0, -r);
+                vertex(-r/2, r);
+                vertex(r/2, r);
+            endShape(CLOSE);
+
         popMatrix();
     }
 }
