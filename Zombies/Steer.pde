@@ -50,20 +50,36 @@ class Steer {
 
     PVector avoidObstacle (Obstacle obst, float safeDistance) {
         PVector steer = new PVector(0, 0);
+        float dotFwd;
 
         //Create vecToCenter - a vector from the character to the center of the obstacle
         PVector vecToCenter = PVector.sub(obst.position, vehicle.position);
 
+        if (debug) {
+            drawVector(vehicle.position, vecToCenter);
+        }
+
         // Find the distance to the obstacle
+        float dist = vecToCenter.mag();
+
+        if (vehicle.fwd != null) {
+            dotFwd = vehicle.fwd.dot(vecToCenter);
+
+            //return a zero vector if the obstacle is behind us
+            if (dotFwd < 0) {
+                return steer;
+            }
+        }
 
         //return a zero vector if the obstacle is too far to concern us
-
-        //return a zero vector if the obstacle is behind us
+        if (dist > safeDistance) {
+            return steer;
+        }
 
         //Use the dot product of the vector to obstacle center and
         //the unit vector to the right of the vehicle to find the
         //distance between the centers of the vehicle and the obstacle
-        //compare this to the some of the radii and
+        //compare this to the sum of the radii and
         //return a zero vector if we can pass safely
 
 

@@ -39,6 +39,15 @@ abstract class Vehicle {
         velocity.limit(maxSpeed);
         position.add(velocity);
         acceleration.mult(0);
+
+        fwd = velocity.get();
+        fwd.normalize();
+        right = new PVector(-fwd.y, +fwd.x);
+
+        if (debug) {
+            drawVector(position, fwd, 50.0);
+            drawVector(position, right, 50.0);
+        }
     }
 
     void applyForce(PVector force) {

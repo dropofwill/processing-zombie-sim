@@ -105,7 +105,7 @@ void setup() {
                               fleerForce));
     }
 
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 1; i++) {
         trees.add(new Obstacle(random(border, width-border),
                                random(border, height-border),
                                random(20, 50)));
@@ -197,4 +197,29 @@ void updateAttrs(float fleeSpeed, float fleeForce, float seekSpeed, float seekFo
     for(int i = 0; i < trees.size(); i++) {
         trees.get(i).display();
     }
+}
+
+void drawVector(PVector start, PVector vec, float scale) {
+    stroke(0);
+    line(start.x, start.y, start.x + vec.x*scale, start.y + vec.y*scale);
+}
+
+void drawVector(PVector start, PVector vec) {
+    stroke(0);
+    line(start.x, start.y, start.x + vec.x, start.y + vec.y);
+}
+
+void drawVector(float x, float y, PVector vec) {
+    stroke(0);
+    line(x, y, x + vec.x, y + vec.y);
+}
+
+void drawVector(PVector start, PVector vec, int col) {
+    stroke(col);
+    line(start.x, start.x, start.x + vec.x, start.x + vec.y);
+}
+
+void drawVector(float x, float y, PVector vec, int col) {
+    stroke(col);
+    line(x, y, x + vec.x, y + vec.y);
 }
