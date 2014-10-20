@@ -31,7 +31,8 @@ class Seeker extends Vehicle {
         PVector force = new PVector(0, 0);
         if (target != null) {
             PVector pursueForce = PVector.mult(
-                                        steer.pursue(closestTarget, 20),
+                                        steer.pursue(closestTarget,
+                                            2*closestTarget.maxSpeed),
                                         seekerTargetWt);
             force.add(pursueForce);
             // and wander a bit
