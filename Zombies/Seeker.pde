@@ -30,20 +30,30 @@ class Seeker extends Vehicle {
     void calcSteeringForces() {
         PVector force = new PVector(0, 0);
         if (target != null) {
-            force.add(PVector.mult(steer.seek(target), seekerTargetWt));
+            PVector pursueForce = PVector.mult(
+                                        steer.pursue(closestTarget, 20),
+                                        seekerTargetWt);
+            force.add(pursueForce);
             // and wander a bit
-            force.add(PVector.mult(steer.wander(), fleerWanderWt));
+            //force.add(PVector.mult(steer.wander(), fleerWanderWt));
+            //if (debug) drawVector(position, pursueForce, 5.0);
         }
         else {
             force.add(PVector.mult(steer.wander(), fleerTargetWt));
         }
 
-        //force.add(PVector.mult(steer.avoidObstacle(), fleerTargetWt));
+        for (int i = 0; i < obstacles.size(); i++) {
+            Obstacle obst = obstacles.get(i);
+            PVector avoidSteer = PVector.mult(
+                                        steer.avoidObstacle(obst, 100),
+                                        seekerAvoidWt);
+            force.add(avoidSteer);
+            if (debug) drawVector(position, avoidSteer);
+        }
 
         if (offStage(border)){
             force.add(PVector.mult(steer.seek(center), seekerStageWt));
         }
-        //could add other steering forces here
         force.limit(maxForce);
         applyForce(force);
     }

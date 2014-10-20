@@ -45,8 +45,8 @@ abstract class Vehicle {
         right = new PVector(-fwd.y, +fwd.x);
 
         if (debug) {
-            drawVector(position, fwd, 50.0);
-            drawVector(position, right, 50.0);
+            drawVector(position, fwd, 10.0);
+            drawVector(position, right, 10.0);
         }
     }
 

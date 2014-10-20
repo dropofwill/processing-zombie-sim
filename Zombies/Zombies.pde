@@ -13,16 +13,18 @@ float zombieRadius = 12;
 float humanRadius = 12;
 
 //weights for steering forces
-float fleerStageWt = 10;
+float fleerStageWt = 8;
 float fleerTargetWt = 5;
-float fleerWanderWt = 1;
-float fleerTargetLimit = width/3;
-float fleerSpeed = 4;
-float fleerForce = 0.1;
+float fleerAvoidWt = 5;
+float fleerWanderWt = 0.5;
+float fleerTargetLimit = 200;
+float fleerSpeed = 3.5;
+float fleerForce = 0.15;
 
-float seekerStageWt = 10;
-float seekerTargetWt = 5;
-float seekerSpeed = 4;
+float seekerStageWt = 5;
+float seekerTargetWt = 10;
+float seekerAvoidWt = 8;
+float seekerSpeed = 2;
 float seekerForce = 0.1;
 
 void setup() {
@@ -34,7 +36,7 @@ void setup() {
     humans = new ArrayList<Vehicle>();
     trees = new ArrayList<Obstacle>();
 
-    for (int i = 0; i < 0; i++) {
+    for (int i = 0; i < 1; i++) {
         zombies.add(new Seeker( humans,
                                 trees,
                                 random(border, width-border),
@@ -44,7 +46,7 @@ void setup() {
                                 seekerForce));
     }
 
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 10; i++) {
         humans.add(new Fleer( zombies,
                               trees,
                               random(border, width-border),
@@ -54,10 +56,10 @@ void setup() {
                               fleerForce));
     }
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 8; i++) {
         trees.add(new Obstacle(random(border, width-border),
                                random(border, height-border),
-                               random(20, 50)));
+                               30));
     }
 }
 
@@ -76,7 +78,6 @@ void draw() {
     for (int i = 0; i < zombies.size(); i++) {
         Vehicle seekV = zombies.get(i);
         seekV.getTarget();
-        /*seekV.setTarget(seekV.position);*/
         seekV.update();
         seekV.display();
     }
@@ -84,7 +85,6 @@ void draw() {
     for (int i = 0; i < humans.size(); i++) {
         Vehicle fleeV = humans.get(i);
         fleeV.getTarget();
-        /*fleeV.setTarget(fleeV.position);*/
         fleeV.update();
         fleeV.display();
     }
@@ -189,8 +189,12 @@ void cp5Setup() {
         .setPosition(5, 25)
         .setValue(fleerWanderWt)
         .setRange(0, 10);
-    cp5.addSlider("fleerTargetLimit")
+    cp5.addSlider("fleerAvoidWt")
         .setPosition(5, 35)
+        .setValue(fleerAvoidWt)
+        .setRange(0, 10);
+    cp5.addSlider("fleerTargetLimit")
+        .setPosition(5, 45)
         .setValue(fleerTargetLimit)
         .setRange(0, width);
 
@@ -198,8 +202,12 @@ void cp5Setup() {
         .setPosition(200, 5)
         .setValue(seekerStageWt)
         .setRange(0, 10);
-    cp5.addSlider("seekerTargetWt")
+    cp5.addSlider("seekerAvoidWt")
         .setPosition(200, 15)
+        .setValue(seekerAvoidWt)
+        .setRange(0, 10);
+    cp5.addSlider("seekerTargetWt")
+        .setPosition(200, 25)
         .setValue(seekerTargetWt)
         .setRange(0, 10);
 

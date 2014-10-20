@@ -29,23 +29,26 @@ class Fleer extends Vehicle {
     void calcSteeringForces() {
         PVector force = new PVector(0, 0);
         if (target != null && closestDist < fleerTargetLimit) {
-            force.add(PVector.mult(steer.flee(target), fleerTargetWt));
+            PVector evadeForce = PVector.mult(steer.flee(target), seekerTargetWt);
+            //PVector evadeForce = PVector.mult(
+                                            //steer.evade(closestTarget, 20),
+                                            //seekerTargetWt);
+            force.add(evadeForce);
             // and wander a bit
-            force.add(PVector.mult(steer.wander(), fleerWanderWt));
+            //force.add(PVector.mult(steer.wander(), fleerWanderWt));
         }
         else {
             force.add(PVector.mult(steer.wander(), fleerTargetWt));
-            force.add(PVector.mult(this.fwd, maxSpeed));
         }
 
         for (int i = 0; i < obstacles.size(); i++) {
             Obstacle obst = obstacles.get(i);
-            PVector avoidSteer = PVector.mult(steer.avoidObstacle(obst, 100), fleerTargetWt);
+            PVector avoidSteer = PVector.mult(
+                                        steer.avoidObstacle(obst, 100),
+                                        fleerAvoidWt);
             force.add(avoidSteer);
 
-            if (debug) {
-                drawVector(position, avoidSteer, 20.0);
-            }
+            if (debug) drawVector(position, avoidSteer);
         }
 
         if (offStage(border)){
