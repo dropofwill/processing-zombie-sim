@@ -40,8 +40,6 @@ class Steer {
         targetVehicle.fwd.normalize();
         PVector aheadTarget = PVector.mult(targetVehicle.fwd, scale);
         PVector target = PVector.add(aheadTarget, targetVehicle.position);
-
-        //if (debug) drawVector(targetVehicle.position, aheadTarget);
         return flee(target);
     }
 
@@ -75,7 +73,6 @@ class Steer {
 
         //Create vecToCenter - a vector from the character to the center of the obstacle
         PVector vecToCenter = PVector.sub(obst.position, vehicle.position);
-        //PVector vecToCenter = PVector.sub(vehicle.position, obst.position);
 
         // Find the distance to the obstacle
         dist = vecToCenter.mag();
@@ -83,21 +80,17 @@ class Steer {
         dotRight = PVector.dot(vehicle.right, vecToCenter);
 
         //return a zero vector if the obstacle is behind us
-        if (dotFwd < 0) {
-            //println("behind");
-        }
+        if (dotFwd < 0) { }
+        //
         //return a zero vector if the obstacle is too far to concern us
-        else if (dist > safeDistance) {
-            //println("too far");
-        }
+        else if (dist > safeDistance) {  }
+
         //Use the dot product of the vector to obstacle center and
         //the unit vector to the right of the vehicle to find the
         //distance between the centers of the vehicle and the obstacle
         //compare this to the sum of the radii and
         //return a zero vector if we can pass safely
-        else if (Math.abs(dotRight) > (vehicle.r + (obst.r * 2))) {
-            //println("too wide");
-        }
+        else if (Math.abs(dotRight) > (vehicle.r + (obst.r * 2))) { }
 
         //If we get this far we are on a collision course and must steer
         //Use the sign of the dot product between the vector to center and
@@ -115,7 +108,7 @@ class Steer {
             steer = PVector.sub(desiredVelocity, vehicle.velocity);
             //consider multiplying this by safeDistance/dist to increase the relative
             //weight of the steering force when obstacles are closer.
-            steer.mult(safeDistance / dist);
+            if (dist != 0) steer.mult(safeDistance / dist);
         }
         // if (debug) drawVector(vehicle.position, vecToCenter);
         return steer;

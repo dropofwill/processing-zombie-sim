@@ -11,7 +11,7 @@ class Obstacle {
 
     void display() {
         fill(100);
-        ellipse(position.x, position.y, r*2, r*2);
+        if (debug) ellipse(position.x, position.y, r*2, r*2);
         image(foliage, position.x - r, position.y - r);
     }
 }

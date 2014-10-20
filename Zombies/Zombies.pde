@@ -36,7 +36,7 @@ void setup() {
     humans = new ArrayList<Vehicle>();
     trees = new ArrayList<Obstacle>();
 
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 2; i++) {
         zombies.add(new Seeker( humans,
                                 trees,
                                 random(border, width-border),
@@ -71,7 +71,7 @@ void draw() {
         rect(border, border, width - 2* border, height - 2* border);
     }
 
-    // ControlP5 changes
+    // Add controlP5 changes
     updateAttrs(fleerSpeed, fleerForce, seekerSpeed, seekerForce);
 
     // Call the appropriate steering behaviors for our agents
@@ -117,8 +117,6 @@ void draw() {
 void reset() {
     for (int i = 0; i < humans.size(); i++) {
         Vehicle human = humans.get(i);
-        /*human.position.x = width/2;*/
-        /*human.position.y = height/2;*/
         human.position.x = random(border, width-border);
         human.position.y = random(border, height-border);
     }
