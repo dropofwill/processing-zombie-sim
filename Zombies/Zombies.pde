@@ -28,58 +28,7 @@ float seekerForce = 0.1;
 void setup() {
     size(1200, 900);
 
-    cp5 = new ControlP5(this);
-    cp5.setColorLabel(0x000000);
-
-    cp5.addSlider("fleerStageWt")
-        .setPosition(5, 5)
-        .setValue(fleerStageWt)
-        .setRange(0, 10);
-    cp5.addSlider("fleerTargetWt")
-        .setPosition(5, 15)
-        .setValue(fleerTargetWt)
-        .setRange(0, 10);
-    cp5.addSlider("fleerWanderWt")
-        .setPosition(5, 25)
-        .setValue(fleerWanderWt)
-        .setRange(0, 10);
-    cp5.addSlider("fleerTargetLimit")
-        .setPosition(5, 35)
-        .setValue(fleerTargetLimit)
-        .setRange(0, width);
-
-    cp5.addSlider("seekerStageWt")
-        .setPosition(200, 5)
-        .setValue(seekerStageWt)
-        .setRange(0, 10);
-    cp5.addSlider("seekerTargetWt")
-        .setPosition(200, 15)
-        .setValue(seekerTargetWt)
-        .setRange(0, 10);
-
-    cp5.addSlider("fleerMaxSpeed")
-        .setPosition(400, 5)
-        .setValue(fleerSpeed)
-        .setRange(0, 10);
-    cp5.addSlider("fleerMaxForce")
-        .setPosition(400, 15)
-        .setValue(fleerForce)
-        .setRange(0, 1);
-
-    cp5.addSlider("seekerMaxSpeed")
-        .setPosition(600, 5)
-        .setValue(seekerSpeed)
-        .setRange(0, 10);
-    cp5.addSlider("seekerMaxForce")
-        .setPosition(600, 15)
-        .setValue(seekerForce)
-        .setRange(0, 1);
-
-    cp5.addToggle("debug")
-        .setPosition(600, 35)
-        .setValue(debug)
-        .setSize(25, 10)
-        .setMode(ControlP5.SWITCH);
+    cp5Setup();
 
     zombies = new ArrayList<Vehicle>();
     humans = new ArrayList<Vehicle>();
@@ -105,7 +54,7 @@ void setup() {
                               fleerForce));
     }
 
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 5; i++) {
         trees.add(new Obstacle(random(border, width-border),
                                random(border, height-border),
                                random(20, 50)));
@@ -222,4 +171,59 @@ void drawVector(PVector start, PVector vec, int col) {
 void drawVector(float x, float y, PVector vec, int col) {
     stroke(col);
     line(x, y, x + vec.x, y + vec.y);
+}
+
+void cp5Setup() {
+    cp5 = new ControlP5(this);
+    cp5.setColorLabel(0x000000);
+
+    cp5.addSlider("fleerStageWt")
+        .setPosition(5, 5)
+        .setValue(fleerStageWt)
+        .setRange(0, 10);
+    cp5.addSlider("fleerTargetWt")
+        .setPosition(5, 15)
+        .setValue(fleerTargetWt)
+        .setRange(0, 10);
+    cp5.addSlider("fleerWanderWt")
+        .setPosition(5, 25)
+        .setValue(fleerWanderWt)
+        .setRange(0, 10);
+    cp5.addSlider("fleerTargetLimit")
+        .setPosition(5, 35)
+        .setValue(fleerTargetLimit)
+        .setRange(0, width);
+
+    cp5.addSlider("seekerStageWt")
+        .setPosition(200, 5)
+        .setValue(seekerStageWt)
+        .setRange(0, 10);
+    cp5.addSlider("seekerTargetWt")
+        .setPosition(200, 15)
+        .setValue(seekerTargetWt)
+        .setRange(0, 10);
+
+    cp5.addSlider("fleerMaxSpeed")
+        .setPosition(400, 5)
+        .setValue(fleerSpeed)
+        .setRange(0, 10);
+    cp5.addSlider("fleerMaxForce")
+        .setPosition(400, 15)
+        .setValue(fleerForce)
+        .setRange(0, 1);
+
+    cp5.addSlider("seekerMaxSpeed")
+        .setPosition(600, 5)
+        .setValue(seekerSpeed)
+        .setRange(0, 10);
+    cp5.addSlider("seekerMaxForce")
+        .setPosition(600, 15)
+        .setValue(seekerForce)
+        .setRange(0, 1);
+
+    cp5.addToggle("debug")
+        .setPosition(600, 35)
+        .setValue(debug)
+        .setSize(25, 10)
+        .setMode(ControlP5.SWITCH);
 }

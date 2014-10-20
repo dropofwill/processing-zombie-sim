@@ -7,8 +7,8 @@ abstract class Vehicle {
     PVector acceleration;
 
     //orientation vectors provide local point of view for vehicle
-    PVector fwd;
-    PVector right;
+    PVector fwd = new PVector(0,0);
+    PVector right = new PVector(0,0);
 
     // seek target
     PVector target = null;
@@ -21,7 +21,7 @@ abstract class Vehicle {
 
     Vehicle(float x_, float y_, float r_, float maxSpeed_, float maxForce_) {
         acceleration = new PVector(0, 0);
-        velocity = new PVector(0, 0);
+        velocity = new PVector(1, 0);
         position = new PVector(x_, y_);
         r = r_;
         maxSpeed = maxSpeed_;

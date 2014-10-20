@@ -21,7 +21,6 @@ class Steer {
 
     PVector flee(PVector target) {
         PVector desired = PVector.sub(vehicle.position, target);
-        println(vehicle.position, target);
         desired.normalize();
         desired.setMag(vehicle.maxSpeed);
         PVector steer = PVector.sub(desired, vehicle.velocity);
@@ -50,50 +49,66 @@ class Steer {
 
     PVector avoidObstacle (Obstacle obst, float safeDistance) {
         PVector steer = new PVector(0, 0);
-        float dotFwd;
+
+        PVector desiredVelocity;
+        float dotFwd,
+              dotRight,
+              dist;
 
         //Create vecToCenter - a vector from the character to the center of the obstacle
         PVector vecToCenter = PVector.sub(obst.position, vehicle.position);
+        //PVector vecToCenter = PVector.sub(vehicle.position, obst.position);
+
+        // Find the distance to the obstacle
+        dist = vecToCenter.mag();
+        dotFwd = vehicle.fwd.dot(vecToCenter);
+        dotRight = PVector.dot(vehicle.right, vecToCenter);
 
         if (debug) {
             drawVector(vehicle.position, vecToCenter);
         }
 
-        // Find the distance to the obstacle
-        float dist = vecToCenter.mag();
-
-        if (vehicle.fwd != null) {
-            dotFwd = vehicle.fwd.dot(vecToCenter);
-
-            //return a zero vector if the obstacle is behind us
-            if (dotFwd < 0) {
-                return steer;
-            }
+        println(dotRight);
+        //return a zero vector if the obstacle is behind us
+        if (dotFwd < 0) {
+            println("behind");
         }
-
         //return a zero vector if the obstacle is too far to concern us
-        if (dist > safeDistance) {
-            return steer;
+        else if (dist > safeDistance) {
+            println("too far");
         }
-
         //Use the dot product of the vector to obstacle center and
         //the unit vector to the right of the vehicle to find the
         //distance between the centers of the vehicle and the obstacle
         //compare this to the sum of the radii and
         //return a zero vector if we can pass safely
-
+        else if (Math.abs(dotRight) > (vehicle.r + (obst.r * 2))) {
+            println("too wide");
+        }
 
         //If we get this far we are on a collision course and must steer
         //Use the sign of the dot product between the vector to center and
         //the vector to the right to determine whether to steer left or right
-
         //for each case calculate desired velocity using the right vector and maxspeed
+        // negative is left
+        else {
+            if (dotRight > 0) {
+                println("left");
+                desiredVelocity = PVector.mult(vehicle.right, -vehicle.maxSpeed);
+            }
+            // positive is right
+            else {
+                println("right");
+                desiredVelocity = PVector.mult(vehicle.right, vehicle.maxSpeed);
+            }
 
+            //compute the force required to change current velocity to desired velocity
+            steer = PVector.sub(desiredVelocity, vehicle.velocity);
 
-        //compute the force required to change current velocity to desired velocity
-
-        //consider multiplying this by safeDistance/dist to increase the relative
-        //weight of the steering force when obstacles are closer.
+            //consider multiplying this by safeDistance/dist to increase the relative
+            //weight of the steering force when obstacles are closer.
+            steer.mult(safeDistance / dist);
+        }
 
         return steer;
     }

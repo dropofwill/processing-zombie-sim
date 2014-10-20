@@ -35,13 +35,17 @@ class Fleer extends Vehicle {
         }
         else {
             force.add(PVector.mult(steer.wander(), fleerTargetWt));
+            force.add(PVector.mult(this.fwd, maxSpeed));
         }
 
         for (int i = 0; i < obstacles.size(); i++) {
             Obstacle obst = obstacles.get(i);
-            PVector avoidSteer = PVector.mult(steer.avoidObstacle(obst, 20), fleerTargetWt);
+            PVector avoidSteer = PVector.mult(steer.avoidObstacle(obst, 100), fleerTargetWt);
             force.add(avoidSteer);
-            println(avoidSteer);
+
+            if (debug) {
+                drawVector(position, avoidSteer, 20.0);
+            }
         }
 
         if (offStage(border)){
